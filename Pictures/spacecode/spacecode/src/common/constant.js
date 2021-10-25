@@ -1,0 +1,9 @@
+
+
+const CONSTANTS={}
+CONSTANTS.USERNAME = 'Username';
+CONSTANTS.PASSWORD = 'Password';
+CONSTANTS.SECURE_LOGIN = 'Secure Login';
+CONSTANTS.EMAIL = 'Email';
+CONSTANTS.OTP = 'OTP';
+export default CONSTANTS
