@@ -1,4 +1,4 @@
-import Rootreducer from "./redux/reducer/rootreduder";
+import Rootreducer from "./redux/reduser/rootreducer";
 import { applyMiddleware, createStore } from "redux";
 import Thunk from "redux-thunk"
 const Store=createStore(Rootreducer,applyMiddleware(Thunk))

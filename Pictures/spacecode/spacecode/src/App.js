@@ -19,7 +19,7 @@ const App = () => {
   <Route exact path="/login">
     <Loginx/>
   </Route>
- 
+  
 
 </Switch>
 

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
-  Box,
-  Container,
-  Paper,
+  
   InputLabel,
   Typography
 } from "@material-ui/core";
 import CustomButton from "../../component/button/Button";
-import {Sendforgotpass, Sendlogin} from "../../redux/action/login"
+import Sendlogin from "../../redux/actions/action"
 import CustomInput from "../../component/input/Input";
 import CustomTypography from "../../component/typography/Typography";
 import Password from "../../component/password/password";
@@ -15,6 +13,7 @@ import Chekbox from "../../component/checkbox/Checkbox";
 import { useHistory, Redirect, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import ReactCardFlip from 'react-card-flip';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useLoginPageStyles } from './styles';
 import { Grid } from "@material-ui/core";
 import Image from "../../component/image/Image";
@@ -40,21 +39,23 @@ const handleforget=()=>{
 
   const history = useHistory();
   const dispatch = useDispatch();
-  const isresp = useSelector((state) => state.Signin.isResp);
-  // console.log(isresp);
+  const resp = useSelector((state) => state.Signin);
+  // const { loading, error, userInfo } = resp;
+  const { loading, error, userInfo} = resp;
+  
   useEffect(() => {
-    
-    if (isresp.status) {
-      
-      history.push("/");
+    if(userInfo!==undefined){
+      // console.log(userInfo);
+      if(userInfo.status){
+        history.push("/")
+        toast.success("success")
+      }
+      else{
+        toast.warn("username or passwor incorrect")
+      }
     }
-    
-    else if (undefined) {
-      toast.error("no response from server");
-    } else {
-      toast.warning("sorry wrong username or password");
-    }
-  },[isresp])
+
+  },[userInfo])
 
 
   const [change, setchange] = useState(false);
@@ -62,7 +63,7 @@ const handleforget=()=>{
   const [password, setpassword] = useState("");
   const [show_hidepass, setshow_hidepass] = useState(false);
   const [isForgatPass, setisForgatPass] = useState(false);
-  console.log(username);
+  // console.log(username);
   const handleChange = (e) => {
     setchange(e.target.checked);
   };
@@ -70,9 +71,9 @@ const handleforget=()=>{
   const handlelogin = (e) => {
     e.preventDefault();
 
-    const data = { username, password };
-    console.log(data);
-    dispatch(Sendlogin(data));
+    const post = { username, password };
+    console.log(post);
+    dispatch(Sendlogin(post));
    
   };
 
@@ -88,8 +89,8 @@ const handleforget=()=>{
 
   const handleforgotpass=(e)=>{
     const data = { username, email };
-    console.log(data);
-    dispatch(Sendforgotpass(data));
+    // console.log(data);
+    // dispatch(Sendforgotpass(data));
   }
 
 
@@ -125,7 +126,7 @@ const Loginbutton=(
     <CustomButton
                 mt={20}
                 onClick={handlelogin}
-                children={"LOGIN"}
+                children={loading ? <CircularProgress color="inherit" size={20} /> : "Login"}
                 fullWidth
                 variant={"contained"}
                 color="primary"
@@ -220,7 +221,7 @@ const mainpage=( <div>
       <Grid item>
       <CustomTypography
                   variant="subtitle2"
-                  // component={Link}
+                  
                   className={classes.forgotPasswordText}
                   onClick={handleforget}
               > {"Forgot Password ?"}  </CustomTypography>
@@ -238,21 +239,21 @@ const mainpage=( <div>
 
 
   return (
-    // <Container className={classes.root}>
+   
     <>
     <ReactCardFlip isFlipped={isForgatPass} flipDirection="vertical">
     <Grid container direction="row"  alignItems="center" justifyContent="center">
 
-    {/* <Paper component={Box} rounded="true" mx="auto"  elevation={2}> */}
+    
     <div className={classes.root}>
     
             {mainpage}
-            {/* </Paper> */}
+            
             </div>
       
     </Grid>
     <Grid container direction="row" alignItems="center" justifyContent="center">
-    {/* <Paper component={Box} rounded mx="auto"  elevation={2}> */}
+    
     <div className={classes.root}>
       {forgotpass}
       </div>
@@ -267,7 +268,7 @@ Copyright ©
                 {new Date().getFullYear()} All rights reserved.
             </Typography>
             </>
-            // </Container>
+            
   );
 };
 export default Login;
